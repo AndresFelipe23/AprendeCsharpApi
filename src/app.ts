@@ -18,6 +18,7 @@ import authRoutes from './routes/auth';
 import courseRoutes from './routes/courses';
 import lessonRoutes from './routes/lessons';
 import progressRoutes from './routes/progress';
+import healthRoutes from './routes/health';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -180,6 +181,9 @@ class App {
     // Rutas de progreso de usuarios
     this.app.use('/api/progress', progressRoutes);
 
+    // Rutas de salud y diagnóstico
+    this.app.use('/health', healthRoutes);
+
     // Ruta 404 para rutas no encontradas
     this.app.use((req, res) => {
       // Si es una ruta de API, devolver JSON
@@ -265,10 +269,23 @@ class App {
   // ============================================
   public async connectDatabase(): Promise<void> {
     try {
+      console.log('🔄 Iniciando conexión a la base de datos...');
       await databaseService.connect();
       console.log('✅ Base de datos conectada exitosamente');
     } catch (error) {
       console.error('❌ Error conectando a la base de datos:', error);
+      console.error('🔍 Detalles del error:', {
+        message: error.message,
+        code: error.code,
+        stack: error.stack
+      });
+      
+      // En producción (Vercel), no hacer throw para evitar crashes
+      if (process.env['NODE_ENV'] === 'production') {
+        console.warn('⚠️ Continuando sin conexión a BD en producción');
+        return;
+      }
+      
       throw error;
     }
   }
