@@ -202,7 +202,7 @@ class App {
       }
       
       // Para otras rutas, mostrar página de error personalizada
-      res.status(404).send(this.get404Page(req.originalUrl));
+      return res.status(404).send(this.get404Page(req.originalUrl));
     });
   }
 
