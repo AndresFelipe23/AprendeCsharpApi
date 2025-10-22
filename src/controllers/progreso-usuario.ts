@@ -21,17 +21,13 @@ export async function getProgressByUser(req: any, res: Response): Promise<void> 
 
     const { cursoId, soloCompletadas } = req.query;
 
-    const result = await ProgresoUsuarioService.obtenerProgresoPorUsuario({
-      usuarioId: req.user.usuarioId,
-      cursoId: cursoId ? parseInt(cursoId as string) : undefined,
-      soloCompletadas: soloCompletadas === 'true'
-    });
+    const result = await ProgresoUsuarioService.obtenerProgresoPorUsuario(
+      req.user.usuarioId,
+      cursoId ? parseInt(cursoId as string) : undefined,
+      soloCompletadas === 'true'
+    );
 
-    if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Progreso obtenido exitosamente', result.datosUsuario);
-      } else {
-      sendError(res, result.mensaje, 'PROGRESS_ERROR', 400);
-      }
+    sendSuccess(res, 'Progreso obtenido exitosamente', result);
     } catch (error) {
     console.error('Error obteniendo progreso:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
@@ -50,18 +46,12 @@ export async function getRecentLessons(req: any, res: Response): Promise<void> {
 
     const { leccionId, soloCompletadas, limite } = req.query;
 
-    const result = await ProgresoUsuarioService.obtenerLeccionesRecientes({
-      usuarioId: req.user.usuarioId,
-      leccionId: leccionId ? parseInt(leccionId as string) : undefined,
-      soloCompletadas: soloCompletadas === 'true',
-      limite: limite ? parseInt(limite as string) : 10
-    });
+    const result = await ProgresoUsuarioService.obtenerLeccionesRecientes(
+      req.user.usuarioId,
+      limite ? parseInt(limite as string) : 10
+    );
 
-    if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Lecciones recientes obtenidas exitosamente', result.datosUsuario);
-    } else {
-      sendError(res, result.mensaje, 'LESSONS_ERROR', 400);
-    }
+    sendSuccess(res, 'Lecciones recientes obtenidas exitosamente', result);
   } catch (error) {
     console.error('Error obteniendo lecciones recientes:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
@@ -80,16 +70,13 @@ export async function getProgressByLesson(req: any, res: Response): Promise<void
 
     const { leccionId } = req.params;
 
-    const result = await ProgresoUsuarioService.obtenerProgresoPorLeccion({
-      usuarioId: req.user.usuarioId,
-      leccionId: parseInt(leccionId)
-    });
+    const result = await ProgresoUsuarioService.obtenerProgresoPorLeccion(
+      parseInt(leccionId),
+      false,
+      50
+    );
 
-    if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Progreso de lección obtenido exitosamente', result.datosUsuario);
-    } else {
-      sendError(res, result.mensaje, 'LESSON_PROGRESS_ERROR', 400);
-    }
+    sendSuccess(res, 'Progreso de lección obtenido exitosamente', result);
   } catch (error) {
     console.error('Error obteniendo progreso de lección:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
@@ -113,18 +100,17 @@ export async function createProgress(req: any, res: Response): Promise<void> {
       return;
     }
 
-    const result = await ProgresoUsuarioService.crearProgreso({
-      usuarioId: req.user.usuarioId,
-        leccionId,
-        porcentajeCompletado,
-      xpGanado: xpGanado || 0
-    });
+    const result = await ProgresoUsuarioService.crearProgreso(
+      req.user.usuarioId,
+      leccionId,
+      porcentajeCompletado
+    );
 
-    if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Progreso creado exitosamente', result.datosUsuario);
-      } else {
-      sendError(res, result.mensaje, 'CREATE_PROGRESS_ERROR', 400);
-      }
+    if (result.success) {
+      sendSuccess(res, 'Progreso creado exitosamente', result);
+    } else {
+      sendError(res, result.message, 'CREATE_PROGRESS_ERROR', 400);
+    }
     } catch (error) {
     console.error('Error creando progreso:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
@@ -149,18 +135,18 @@ export async function updateProgress(req: any, res: Response): Promise<void> {
       return;
     }
 
-    const result = await ProgresoUsuarioService.actualizarProgreso({
-      usuarioId: req.user.usuarioId,
-      leccionId: parseInt(leccionId),
+    const result = await ProgresoUsuarioService.actualizarProgreso(
+      req.user.usuarioId,
+      parseInt(leccionId),
       porcentajeCompletado,
-      xpGanado: xpGanado || 0
-    });
+      xpGanado || 0
+    );
 
-    if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Progreso actualizado exitosamente', result.datosUsuario);
-      } else {
-      sendError(res, result.mensaje, 'UPDATE_PROGRESS_ERROR', 400);
-      }
+    if (result.success) {
+      sendSuccess(res, 'Progreso actualizado exitosamente', result);
+    } else {
+      sendError(res, result.message, 'UPDATE_PROGRESS_ERROR', 400);
+    }
     } catch (error) {
     console.error('Error actualizando progreso:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
@@ -179,15 +165,15 @@ export async function markLessonCompleted(req: any, res: Response): Promise<void
 
     const { leccionId } = req.params;
 
-    const result = await ProgresoUsuarioService.marcarCompletada({
-      usuarioId: req.user.usuarioId,
-      leccionId: parseInt(leccionId)
-    });
+    const result = await ProgresoUsuarioService.marcarCompletada(
+      req.user.usuarioId,
+      parseInt(leccionId)
+    );
 
-    if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Lección marcada como completada exitosamente', result.datosUsuario);
+    if (result.success) {
+      sendSuccess(res, 'Lección marcada como completada exitosamente', result);
     } else {
-      sendError(res, result.mensaje, 'MARK_COMPLETED_ERROR', 400);
+      sendError(res, result.message, 'MARK_COMPLETED_ERROR', 400);
     }
   } catch (error) {
     console.error('Error marcando lección como completada:', error);
@@ -207,16 +193,12 @@ export async function getCourseSummary(req: any, res: Response): Promise<void> {
 
     const { cursoId } = req.params;
 
-    const result = await ProgresoUsuarioService.obtenerResumenCurso({
-      usuarioId: req.user.usuarioId,
-      cursoId: parseInt(cursoId)
-    });
+    const result = await ProgresoUsuarioService.obtenerResumenCurso(
+      req.user.usuarioId,
+      parseInt(cursoId)
+    );
 
-    if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Resumen de curso obtenido exitosamente', result.datosUsuario);
-    } else {
-      sendError(res, result.mensaje, 'COURSE_SUMMARY_ERROR', 400);
-    }
+    sendSuccess(res, 'Resumen de curso obtenido exitosamente', result);
   } catch (error) {
     console.error('Error obteniendo resumen de curso:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
