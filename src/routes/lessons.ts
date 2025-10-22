@@ -53,8 +53,8 @@ router.get('/', authenticateToken, async (req: any, res: any) => {
 
     const result = await databaseService.executeQuery(query, params);
     
-    if (result.success) {
-      sendSuccess(res, 'Lecciones obtenidas exitosamente', result.data);
+    if (result.recordset) {
+      sendSuccess(res, 'Lecciones obtenidas exitosamente', result.recordset);
     } else {
       sendError(res, 'Error obteniendo lecciones', 'LESSONS_ERROR', 500);
     }
@@ -94,8 +94,8 @@ router.get('/:id', authenticateToken, async (req: any, res: any) => {
 
     const result = await databaseService.executeQuery(query, [{ name: 'lessonId', value: lessonId }]);
     
-    if (result.success && result.data && result.data.length > 0) {
-      sendSuccess(res, 'Lección obtenida exitosamente', result.data[0]);
+    if (result.recordset && result.recordset.length > 0) {
+      sendSuccess(res, 'Lección obtenida exitosamente', result.recordset[0]);
     } else {
       sendError(res, 'Lección no encontrada', 'LESSON_NOT_FOUND', 404);
     }

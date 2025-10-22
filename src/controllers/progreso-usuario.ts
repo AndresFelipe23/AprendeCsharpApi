@@ -7,8 +7,7 @@ import { Request, Response } from 'express';
 import { ProgresoUsuarioService } from '../services/progreso-usuario';
 import { sendSuccess, sendError } from '../utils/response';
 
-// Instancia del servicio
-const progresoUsuarioService = new ProgresoUsuarioService();
+// Usar métodos estáticos del servicio
 
 // ============================================
 // Obtener progreso por usuario
@@ -22,7 +21,7 @@ export async function getProgressByUser(req: any, res: Response): Promise<void> 
 
     const { cursoId, soloCompletadas } = req.query;
 
-    const result = await progresoUsuarioService.obtenerProgresoPorUsuario({
+    const result = await ProgresoUsuarioService.obtenerProgresoPorUsuario({
       usuarioId: req.user.usuarioId,
       cursoId: cursoId ? parseInt(cursoId as string) : undefined,
       soloCompletadas: soloCompletadas === 'true'
@@ -51,7 +50,7 @@ export async function getRecentLessons(req: any, res: Response): Promise<void> {
 
     const { leccionId, soloCompletadas, limite } = req.query;
 
-    const result = await progresoUsuarioService.obtenerLeccionesRecientes({
+    const result = await ProgresoUsuarioService.obtenerLeccionesRecientes({
       usuarioId: req.user.usuarioId,
       leccionId: leccionId ? parseInt(leccionId as string) : undefined,
       soloCompletadas: soloCompletadas === 'true',
@@ -81,7 +80,7 @@ export async function getProgressByLesson(req: any, res: Response): Promise<void
 
     const { leccionId } = req.params;
 
-    const result = await progresoUsuarioService.obtenerProgresoPorLeccion({
+    const result = await ProgresoUsuarioService.obtenerProgresoPorLeccion({
       usuarioId: req.user.usuarioId,
       leccionId: parseInt(leccionId)
     });
@@ -114,7 +113,7 @@ export async function createProgress(req: any, res: Response): Promise<void> {
       return;
     }
 
-    const result = await progresoUsuarioService.crearProgreso({
+    const result = await ProgresoUsuarioService.crearProgreso({
       usuarioId: req.user.usuarioId,
         leccionId,
         porcentajeCompletado,
@@ -150,7 +149,7 @@ export async function updateProgress(req: any, res: Response): Promise<void> {
       return;
     }
 
-    const result = await progresoUsuarioService.actualizarProgreso({
+    const result = await ProgresoUsuarioService.actualizarProgreso({
       usuarioId: req.user.usuarioId,
       leccionId: parseInt(leccionId),
       porcentajeCompletado,
@@ -180,7 +179,7 @@ export async function markLessonCompleted(req: any, res: Response): Promise<void
 
     const { leccionId } = req.params;
 
-    const result = await progresoUsuarioService.marcarCompletada({
+    const result = await ProgresoUsuarioService.marcarCompletada({
       usuarioId: req.user.usuarioId,
       leccionId: parseInt(leccionId)
     });
@@ -208,7 +207,7 @@ export async function getCourseSummary(req: any, res: Response): Promise<void> {
 
     const { cursoId } = req.params;
 
-    const result = await progresoUsuarioService.obtenerResumenCurso({
+    const result = await ProgresoUsuarioService.obtenerResumenCurso({
       usuarioId: req.user.usuarioId,
       cursoId: parseInt(cursoId)
     });
@@ -236,16 +235,9 @@ export async function getUserStats(req: any, res: Response): Promise<void> {
 
     const { limite } = req.query;
 
-    const result = await progresoUsuarioService.obtenerEstadisticasUsuario({
-      usuarioId: req.user.usuarioId,
-      limite: limite ? parseInt(limite as string) : 10
-    });
+    const result = await ProgresoUsuarioService.obtenerEstadisticas(req.user.usuarioId);
 
-    if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Estadísticas obtenidas exitosamente', result.datosUsuario);
-    } else {
-      sendError(res, result.mensaje, 'STATS_ERROR', 400);
-    }
+    sendSuccess(res, 'Estadísticas obtenidas exitosamente', result);
   } catch (error) {
     console.error('Error obteniendo estadísticas:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);

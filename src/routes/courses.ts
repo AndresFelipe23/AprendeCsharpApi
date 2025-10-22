@@ -34,8 +34,8 @@ router.get('/', async (req: any, res: any) => {
 
     const result = await databaseService.executeQuery(query);
     
-    if (result.success) {
-      sendSuccess(res, 'Cursos obtenidos exitosamente', result.data);
+    if (result.recordset) {
+      sendSuccess(res, 'Cursos obtenidos exitosamente', result.recordset);
     } else {
       sendError(res, 'Error obteniendo cursos', 'COURSES_ERROR', 500);
     }
@@ -70,8 +70,8 @@ router.get('/:id', async (req: any, res: any) => {
 
     const result = await databaseService.executeQuery(query, [{ name: 'courseId', value: courseId }]);
     
-    if (result.success && result.data && result.data.length > 0) {
-      sendSuccess(res, 'Curso obtenido exitosamente', result.data[0]);
+    if (result.recordset && result.recordset.length > 0) {
+      sendSuccess(res, 'Curso obtenido exitosamente', result.recordset[0]);
     } else {
       sendError(res, 'Curso no encontrado', 'COURSE_NOT_FOUND', 404);
     }
@@ -109,8 +109,8 @@ router.get('/:id/lessons', authenticateToken, async (req: any, res: any) => {
 
     const result = await databaseService.executeQuery(query, [{ name: 'courseId', value: courseId }]);
     
-    if (result.success) {
-      sendSuccess(res, 'Lecciones obtenidas exitosamente', result.data);
+    if (result.recordset) {
+      sendSuccess(res, 'Lecciones obtenidas exitosamente', result.recordset);
     } else {
       sendError(res, 'Error obteniendo lecciones', 'LESSONS_ERROR', 500);
     }
