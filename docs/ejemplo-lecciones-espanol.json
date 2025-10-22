@@ -1,0 +1,39 @@
+{
+  "courseId": 2,
+  "lessons": [
+    {
+      "titulo": "¿Qué es C#?",
+      "descripcion": "Introducción al lenguaje de programación C#, su historia, características principales y por qué es una excelente opción para aprender programación.",
+      "contenido": "# ¿Qué es C#?\n\n## Historia de C#\n\nC# (pronunciado \"C Sharp\") fue desarrollado por Microsoft en el año 2000 como parte de la plataforma .NET. Fue creado por Anders Hejlsberg, quien también participó en el desarrollo de Turbo Pascal y Delphi.\n\n## Características principales\n\n- **Lenguaje orientado a objetos**: C# es completamente orientado a objetos\n- **Tipado estático**: Los tipos se verifican en tiempo de compilación\n- **Garbage Collection**: Gestión automática de memoria\n- **Multiplataforma**: Funciona en Windows, Linux y macOS\n- **Sintaxis clara**: Fácil de leer y entender\n\n## ¿Por qué aprender C#?\n\n1. **Demanda laboral alta**: Muchas empresas buscan desarrolladores C#\n2. **Versatilidad**: Se usa para aplicaciones web, móviles, desktop y juegos\n3. **Comunidad activa**: Gran comunidad de desarrolladores\n4. **Documentación excelente**: Microsoft proporciona documentación completa\n\n## Entorno de desarrollo\n\n- **Visual Studio**: IDE completo de Microsoft\n- **Visual Studio Code**: Editor ligero con extensiones\n- **JetBrains Rider**: IDE profesional alternativo\n- **.NET SDK**: Kit de desarrollo necesario",
+      "ordenIndice": 1,
+      "recompensaXP": 50,
+      "estaBloqueada": false,
+      "tipoLeccion": "Teoría",
+      "codigoEjemplo": "// Tu primer programa en C#\nusing System;\n\nclass Program\n{\n    static void Main()\n    {\n        Console.WriteLine(\"¡Hola, mundo!\");\n        Console.WriteLine(\"¡Bienvenido a C#!\");\n    }\n}",
+      "salidaEsperada": "¡Hola, mundo!\n¡Bienvenido a C#!",
+      "pistas": [
+        "C# es un lenguaje de programación moderno y poderoso",
+        "Fue desarrollado por Microsoft como parte de .NET",
+        "Es completamente orientado a objetos",
+        "Tiene una sintaxis clara y fácil de aprender"
+      ]
+    },
+    {
+      "titulo": "Instalación y Configuración",
+      "descripcion": "Aprende a instalar y configurar el entorno de desarrollo necesario para programar en C#, incluyendo Visual Studio y el .NET SDK.",
+      "contenido": "# Instalación y Configuración\n\n## Requisitos del sistema\n\n- **Windows**: Windows 10 o superior\n- **macOS**: macOS 10.15 o superior\n- **Linux**: Ubuntu 18.04+ o distribuciones compatibles\n\n## Instalación del .NET SDK\n\n1. Ve a [dotnet.microsoft.com](https://dotnet.microsoft.com/download)\n2. Descarga el SDK para tu sistema operativo\n3. Ejecuta el instalador\n4. Verifica la instalación con: `dotnet --version`\n\n## Visual Studio Code\n\n1. Descarga VS Code desde [code.visualstudio.com](https://code.visualstudio.com/)\n2. Instala la extensión \"C# Dev Kit\"\n3. Instala la extensión \"C#\"\n\n## Visual Studio (Windows)\n\n1. Descarga Visual Studio Community (gratuito)\n2. Selecciona la carga de trabajo \".NET desktop development\"\n3. Instala con las opciones recomendadas\n\n## Verificación de la instalación\n\n```bash\n# Verificar versión de .NET\ndotnet --version\n\n# Crear un nuevo proyecto\ndotnet new console -n MiPrimerProyecto\n\n# Ejecutar el proyecto\ncd MiPrimerProyecto\ndotnet run\n```",
+      "ordenIndice": 2,
+      "recompensaXP": 50,
+      "estaBloqueada": false,
+      "tipoLeccion": "Práctica",
+      "codigoEjemplo": "using System;\n\nnamespace MiPrimerProyecto\n{\n    class Program\n    {\n        static void Main(string[] args)\n        {\n            Console.WriteLine(\"¡Mi primer programa en C#!\");\n            Console.WriteLine(\"Fecha actual: \" + DateTime.Now);\n        }\n    }\n}",
+      "salidaEsperada": "¡Mi primer programa en C#!\nFecha actual: [fecha y hora actual]",
+      "pistas": [
+        "Asegúrate de tener instalado el .NET SDK",
+        "Usa 'dotnet new console' para crear un proyecto",
+        "Usa 'dotnet run' para ejecutar el programa",
+        "DateTime.Now te da la fecha y hora actual"
+      ]
+    }
+  ]
+}
