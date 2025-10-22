@@ -11,7 +11,11 @@
     "clean": "rimraf dist",
     "vercel-build": "tsc"
   },
-  "keywords": ["typescript", "csharp", "learning"],
+  "keywords": [
+    "typescript",
+    "csharp",
+    "learning"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
@@ -25,11 +29,13 @@
     "@types/mssql": "^9.1.8",
     "@types/multer": "^2.0.0",
     "@types/node": "^24.8.1",
+    "@vercel/node": "^3.0.0",
     "rimraf": "^5.0.0",
     "ts-node": "^10.9.0",
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@vercel/node": "^5.4.1",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "compression": "^1.8.1",
