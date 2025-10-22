@@ -22,8 +22,7 @@
     "exactOptionalPropertyTypes": false,
     "noImplicitOverride": false,
     "noPropertyAccessFromIndexSignature": false,
-    "noUncheckedIndexedAccess": false,
-    "suppressImplicitAnyIndexErrors": true
+    "noUncheckedIndexedAccess": false
   },
   "include": [
     "src/**/*"
