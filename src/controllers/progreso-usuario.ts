@@ -4,8 +4,11 @@
 // ============================================
 
 import { Request, Response } from 'express';
-import { progresoUsuarioService } from '../services/progreso-usuario';
+import { ProgresoUsuarioService } from '../services/progreso-usuario';
 import { sendSuccess, sendError } from '../utils/response';
+
+// Instancia del servicio
+const progresoUsuarioService = new ProgresoUsuarioService();
 
 // ============================================
 // Obtener progreso por usuario
@@ -27,10 +30,10 @@ export async function getProgressByUser(req: any, res: Response): Promise<void> 
 
     if (result.resultado === 'Exito') {
       sendSuccess(res, 'Progreso obtenido exitosamente', result.datosUsuario);
-    } else {
+      } else {
       sendError(res, result.mensaje, 'PROGRESS_ERROR', 400);
-    }
-  } catch (error) {
+      }
+    } catch (error) {
     console.error('Error obteniendo progreso:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
   }
@@ -113,17 +116,17 @@ export async function createProgress(req: any, res: Response): Promise<void> {
 
     const result = await progresoUsuarioService.crearProgreso({
       usuarioId: req.user.usuarioId,
-      leccionId,
-      porcentajeCompletado,
+        leccionId,
+        porcentajeCompletado,
       xpGanado: xpGanado || 0
     });
 
     if (result.resultado === 'Exito') {
       sendSuccess(res, 'Progreso creado exitosamente', result.datosUsuario);
-    } else {
+      } else {
       sendError(res, result.mensaje, 'CREATE_PROGRESS_ERROR', 400);
-    }
-  } catch (error) {
+      }
+    } catch (error) {
     console.error('Error creando progreso:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
   }
@@ -156,10 +159,10 @@ export async function updateProgress(req: any, res: Response): Promise<void> {
 
     if (result.resultado === 'Exito') {
       sendSuccess(res, 'Progreso actualizado exitosamente', result.datosUsuario);
-    } else {
+      } else {
       sendError(res, result.mensaje, 'UPDATE_PROGRESS_ERROR', 400);
-    }
-  } catch (error) {
+      }
+    } catch (error) {
     console.error('Error actualizando progreso:', error);
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
   }
@@ -248,3 +251,17 @@ export async function getUserStats(req: any, res: Response): Promise<void> {
     sendError(res, 'Error interno del servidor', 'INTERNAL_ERROR', 500);
   }
 }
+
+// ============================================
+// Exportar controlador para rutas
+// ============================================
+export const ProgresoUsuarioController = {
+  getProgressByUser,
+  getRecentLessons,
+  getProgressByLesson,
+  createProgress,
+  updateProgress,
+  markLessonCompleted,
+  getCourseSummary,
+  getUserStats
+};

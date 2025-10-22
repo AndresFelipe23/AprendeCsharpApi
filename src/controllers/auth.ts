@@ -65,7 +65,7 @@ export async function register(req: any, res: Response): Promise<void> {
     });
 
     if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Usuario registrado exitosamente', result.datosUsuario);
+      sendSuccess(res, 'Usuario registrado exitosamente', result);
     } else {
       if (result.mensaje.includes('email')) {
         sendEmailExistsError(res, result.mensaje);
@@ -194,7 +194,7 @@ export async function updateProfile(req: any, res: Response): Promise<void> {
     });
 
     if (result.resultado === 'Exito') {
-      sendSuccess(res, 'Perfil actualizado exitosamente', result.datosUsuario);
+      sendSuccess(res, 'Perfil actualizado exitosamente', result);
     } else {
       sendError(res, result.mensaje, 'PROFILE_UPDATE_ERROR', 400);
     }
@@ -226,3 +226,17 @@ export async function recoverPassword(req: any, res: Response): Promise<void> {
     handleAuthError(res, error);
   }
 }
+
+// ============================================
+// Exportar controlador para rutas
+// ============================================
+export const authController = {
+  login,
+  register,
+  verifyToken,
+  getProfile,
+  logout,
+  changePassword,
+  updateProfile,
+  recoverPassword
+};
