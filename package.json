@@ -4,12 +4,12 @@
   "description": "Proyecto para aprender C# con TypeScript",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "./node_modules/.bin/tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "watch": "tsc --watch",
-    "clean": "rimraf dist",
-    "vercel-build": "tsc"
+    "dev": "./node_modules/.bin/ts-node src/index.ts",
+    "watch": "./node_modules/.bin/tsc --watch",
+    "clean": "./node_modules/.bin/rimraf dist",
+    "vercel-build": "./node_modules/.bin/tsc"
   },
   "keywords": [
     "typescript",
