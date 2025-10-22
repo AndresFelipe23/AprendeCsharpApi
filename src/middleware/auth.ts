@@ -122,3 +122,8 @@ export function authLogger(req: Request, res: Response, next: NextFunction): voi
   
   next();
 }
+
+// ============================================
+// Alias para compatibilidad
+// ============================================
+export const authMiddleware = authenticateToken;
