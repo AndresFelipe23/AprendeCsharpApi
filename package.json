@@ -4,12 +4,12 @@
   "description": "Proyecto para aprender C# con TypeScript",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --noEmitOnError false",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
     "watch": "tsc --watch",
     "clean": "rimraf dist",
-    "vercel-build": "tsc"
+    "vercel-build": "tsc --noEmitOnError false"
   },
   "keywords": [
     "typescript",
@@ -43,7 +43,7 @@
     "cors": "^2.8.5",
     "dayjs": "^1.11.18",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0",
+    "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
     "express-rate-limit": "^8.1.0",
     "express-validator": "^7.2.1",
