@@ -51,6 +51,8 @@ export interface RegistroResponse {
   mensaje: string;
   usuarioId?: number;
   tokenVerificacion?: string;
+  token?: string;
+  datosUsuario?: Usuario;
 }
 
 // ============================================
@@ -169,16 +171,18 @@ export interface ActualizarPerfilResponse {
 export interface ApiResponse<T = any> {
   success: boolean;
   message: string;
-  data?: T;
-  error?: string;
+  data?: T | undefined;
+  error?: string | undefined;
 }
 
 // ============================================
 // Tipos para Middleware de Autenticación
 // ============================================
+import { Request } from 'express';
+
 export interface AuthRequest extends Request {
   user?: Usuario;
-  userId?: number;
+  userId?: number | undefined;
 }
 
 // ============================================

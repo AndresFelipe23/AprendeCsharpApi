@@ -244,25 +244,43 @@ class AuthService {
   async register(request: RegistroRequest): Promise<RegistroResponse> {
     try {
       const passwordHash = await this.hashPassword(request.password);
-      
+
       const result = await databaseService.register(
         request.email,
         request.nombreUsuario,
         passwordHash,
         request.nombreCompleto
       );
-      
+
       if (result.recordset && result.recordset.length > 0) {
         const row = result.recordset[0];
-        
+
         if (row.Resultado === 'Exito') {
           const tokenVerificacion = this.generateVerificationToken(row.UsuarioId);
-          
+
+          // Obtener datos del usuario para generar el token JWT
+          const usuario: Usuario = {
+            UsuarioId: row.UsuarioId,
+            Email: request.email,
+            NombreUsuario: request.nombreUsuario,
+            ...(request.nombreCompleto && { NombreCompleto: request.nombreCompleto }),
+            NivelActual: 1,
+            XPTotal: 0,
+            Racha: 0,
+            FechaCreacion: new Date().toISOString(),
+            EstaActivo: true
+          };
+
+          // Generar token JWT para login automático
+          const token = this.generateToken(usuario);
+
           return {
             resultado: 'Exito',
             mensaje: row.Mensaje,
             usuarioId: row.UsuarioId,
-            tokenVerificacion
+            tokenVerificacion,
+            token,
+            datosUsuario: usuario
           };
         } else {
           return {

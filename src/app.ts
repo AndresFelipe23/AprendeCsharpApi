@@ -18,7 +18,11 @@ import authRoutes from './routes/auth';
 import courseRoutes from './routes/courses';
 import lessonRoutes from './routes/lessons';
 import progressRoutes from './routes/progress';
-import healthRoutes from './routes/health';
+import exerciseRoutes from './routes/ejercicios';
+import exerciseTypeRoutes from './routes/exercise-types';
+import exerciseOptionsRoutes from './routes/exercise-options';
+import rachaDiariaRoutes from './routes/racha-diaria';
+import logrosRoutes from './routes/logros';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -151,6 +155,11 @@ class App {
             courses: '/api/courses',
             lessons: '/api/lessons',
             progress: '/api/progress',
+            exercises: '/api/exercises',
+            'exercise-types': '/api/exercise-types',
+            'exercise-options': '/api/exercise-options',
+            streak: '/api/streak',
+            achievements: '/api/achievements',
             health: '/health',
             info: '/api/info'
           },
@@ -181,32 +190,50 @@ class App {
     // Rutas de progreso de usuarios
     this.app.use('/api/progress', progressRoutes);
 
-    // Rutas de salud y diagnóstico
-    this.app.use('/health', healthRoutes);
+    // Rutas de ejercicios
+    this.app.use('/api/exercises', exerciseRoutes);
+
+    // Rutas de tipos de ejercicio
+    this.app.use('/api/exercise-types', exerciseTypeRoutes);
+
+    // Rutas de opciones de ejercicio
+    this.app.use('/api/exercise-options', exerciseOptionsRoutes);
+
+    // Rutas de racha diaria
+    this.app.use('/api/streak', rachaDiariaRoutes);
+
+    // Rutas de logros
+    this.app.use('/api/achievements', logrosRoutes);
 
     // Ruta 404 para rutas no encontradas
     this.app.use((req, res) => {
       // Si es una ruta de API, devolver JSON
       if (req.path.startsWith('/api/')) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           message: 'Endpoint no encontrado',
           error: 'NOT_FOUND',
           path: req.originalUrl,
-          availableEndpoints: {
+            availableEndpoints: {
             auth: '/api/auth',
             courses: '/api/courses',
             lessons: '/api/lessons',
             progress: '/api/progress',
+            exercises: '/api/exercises',
+            'exercise-types': '/api/exercise-types',
+            'exercise-options': '/api/exercise-options',
+            streak: '/api/streak',
+            achievements: '/api/achievements',
             health: '/health',
             info: '/api/info'
           },
           suggestion: 'Visita la página principal para ver la documentación completa'
         });
+        return;
       }
       
       // Para otras rutas, mostrar página de error personalizada
-      return res.status(404).send(this.get404Page(req.originalUrl));
+      res.status(404).send(this.get404Page(req.originalUrl));
     });
   }
 
@@ -269,23 +296,10 @@ class App {
   // ============================================
   public async connectDatabase(): Promise<void> {
     try {
-      console.log('🔄 Iniciando conexión a la base de datos...');
       await databaseService.connect();
       console.log('✅ Base de datos conectada exitosamente');
     } catch (error) {
       console.error('❌ Error conectando a la base de datos:', error);
-      console.error('🔍 Detalles del error:', {
-        message: error.message,
-        code: error.code,
-        stack: error.stack
-      });
-      
-      // En producción (Vercel), no hacer throw para evitar crashes
-      if (process.env['NODE_ENV'] === 'production') {
-        console.warn('⚠️ Continuando sin conexión a BD en producción');
-        return;
-      }
-      
       throw error;
     }
   }
