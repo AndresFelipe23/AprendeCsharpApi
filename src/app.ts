@@ -3,11 +3,14 @@
 // Aplicación de Aprendizaje de C#
 // ============================================
 
+// Cargar variables de entorno PRIMERO antes de cualquier importación
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
 
 // Importar servicios y middleware
 import { databaseService } from './services/database';
@@ -23,9 +26,6 @@ import exerciseTypeRoutes from './routes/exercise-types';
 import exerciseOptionsRoutes from './routes/exercise-options';
 import rachaDiariaRoutes from './routes/racha-diaria';
 import logrosRoutes from './routes/logros';
-
-// Cargar variables de entorno
-dotenv.config();
 
 class App {
   public app: express.Application;
